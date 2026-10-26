@@ -28,7 +28,8 @@ it('registers a customer, signs them in and records identity.customer-registered
         ->and($claims->roles)->toBe(['customer'])
         ->and($outbox->type)->toBe('identity.customer-registered')
         ->and($outbox->subject)->toBe($customer->id)
-        ->and($outbox->envelope['data'])->toBe([
+        // toEqual: Postgres jsonb does not keep key order.
+        ->and($outbox->envelope['data'])->toEqual([
             'customerId' => $customer->id,
             'email' => 'ada@example.com',
             'name' => 'Ada Lovelace',
